@@ -46,4 +46,17 @@ class NovoIngredienteControllerTest {
                 .andExpect(redirectedUrlPattern("/api/ingredientes/{id}"));
 
     }
+
+    @Test
+    void naoDeveCadastrarNovoIngrediente() throws Exception {
+
+        NovoIngredienteRequest body = new NovoIngredienteRequest("Queijo muçarela", new BigDecimal("-2.0"), 200);
+        MockHttpServletRequestBuilder request = post("/api/ingredientes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(body));
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest());
+
+    }
 }
